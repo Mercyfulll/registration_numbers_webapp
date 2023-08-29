@@ -23,7 +23,7 @@ var app = express()
 var pgp = pgPromise();
 var reg = registrationNumber()
 
-var connectionString = process.env.PORT || 'postgres://ncmlcbqz:SXVviMgE6Vt3-ssTYfVB6Wsj42Tw4t0N@trumpet.db.elephantsql.com/ncmlcbqz'
+var connectionString = process.env.PORT || 'postgres://ncmlcbqz:SXVviMgE6Vt3-ssTYfVB6Wsj42Tw4t0N@trumpet.db.elephantsql.com/ncmlcbqz?ssl=true'
 
 // Create a database instance and pass connection string inside
 const db = pgp(connectionString);
