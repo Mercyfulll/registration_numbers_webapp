@@ -1,0 +1,64 @@
+ <div class="text">
+            <div class="error">{{messages.error}}</div><br>
+            <br>
+    <form action="/" method="post">
+            <label>Registration Number :</label>
+            <input type = "text" class ="reg" name = "regiNumber">
+            <div class="add">
+                
+                <button class="addButton" type="submit">Add</button>
+                <script>
+                    $(".addButton").ready(function(){ 
+                    $(form).on('submit', function(){ 
+                            location.reload();
+                    });
+                    })
+                </script>
+            </div>
+
+        </div>
+        <div class="buttons">
+            {{!-- <div class="add">
+                
+                <button class="addButton" type="submit">Add</button>
+                
+            </div> --}}
+    </form>
+            <div class="clear">
+                <form action="/reset" method="post">
+                <button class="clearButton" type="submit">Clear</button>
+                </form>
+            </div>
+        </div>
+        <div class="error">
+            {{messages.wrong}}
+        </div>
+        <div class="filter">
+                <div class="dropdown">
+                    <form action="/town" method="post">
+                        <label >Town :</label>
+                        <select class="town" name="townSelect">
+                        <option value=""></option>
+                        <option value="Capetown">Cape Town</option>
+                        <option value="Knysna">Knysna</option>
+                        <option value="Paarl">Paarl</option>
+                        <option value="Stellenbosch">Stellenbosch</option>
+                        </select>
+                        
+                        {{!-- <div class="show"> --}}
+                            <button class="showButton" type="submit">Show</button>
+                        {{!-- </div> --}}
+                    </form>
+                </div>
+        </div>
+        <div class="registration">
+            <div class="list">
+                {{#each townReg}}
+                <ul class = "plates">
+                    <li><a href="/reg_number/{{this.reg_num}}">{{this.reg_num}}</a></li>
+                </ul>
+                {{/each}}
+            </div>
+        </div>
+    
+    </div>
