@@ -5,18 +5,23 @@ export default function registrationNumber(){
     let registration = '';
     let regNumChar = '';
     let location = '';
+    let msg = '';
 
    
    function validateRegNum(regNum){
-
-       var char = /^[cxjalCXJAL\s0-9]*$/i
+    
+       
+       var char =  /^[cxjalCXJAL]{2}\s\d{3,6}$/
        var val = char.test(regNum)
        var firstChar = regNum.startsWith('c') || regNum.startsWith('C')
+        
        if(val && firstChar){
          registration = regNum.toUpperCase()
        }
-       return registration
+
+       return registration 
    }
+   
    function getValidatedRegNum(){
         return registration
    }
@@ -28,21 +33,17 @@ export default function registrationNumber(){
            return "Only enter registration from Paarl, Stellenbosch,Cape Town and George"
        }            
    }
-//    function handlingErrors(regNum){
-//         var char = /^[cxjalCXJAL\s0-9]*$/i
-//         var val = char.test(regNum)
-//         if (regNum === ''){
-//             return "Empty entry please enter registration number"
-//         }else if (regNum !== val){
-//             return "Invalid registration"
-//         } 
-//     }
-//    function errorMessages2(){
-//     let reg = regNum.startsWith('C') || regNum.startsWith('c')
-//     if (!reg){
-//         return "Please enter valid registration number"
-//     }else
-//    }
+   function handlingErrors(regNum){
+        if (regNum == ''){
+            msg = "Empty entry please enter registration number"
+        }
+        return msg
+        
+        
+    }
+    function getError(){
+        return msg
+    }
    function registrationCharacter(rNum){
         let regiNum = rNum.toUpperCase() 
         if(regiNum.startsWith('CA')){
@@ -74,19 +75,18 @@ export default function registrationNumber(){
        var town = townPlate.toLowerCase()
        var plate = regPlate.toUpperCase()
        if(town === "Knysna" &&  plate.startsWith('CX')){
-           return plate;
+           regPlate = plate;
        }
        if(town === "Capetown" && plate.startsWith('CA')){
-           return plate
+           regPlate = plate
        }
        if (town === "Paarl" && plate.startsWith('CJ')){
-           return plate
+            regPlate = plate
        }
        if (town === "Stellenbosch" && plate.startsWith('CL')){
-           return plate
-       }else {
-           return ''
+            regPlate = plate
        }
+       return plate
    }
    function regPlates(regNum){
        platesArr.push(regNum)
@@ -107,14 +107,11 @@ export default function registrationNumber(){
            regByTown,
            regPlates,
            getPlates,
+           handlingErrors,
+           getError,
            townName,
            reset,
-        //    handlingErrors,
            getValidatedRegNum,
            registrationCharacter,
    }
 }
-
-let x = registrationNumber()
-console.log(x.registrationCharacter('Ca 1234'))
-console.log(x.townName('capeTown'))

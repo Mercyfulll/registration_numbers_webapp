@@ -4,16 +4,18 @@
 // import session for carrying info between pages
 // import pg-promise for node postgres
 // import express web application framework
+// import queries from database
 // import flash for messages
 
-import registrationNumber from "./registration_numbers.js";
-import {engine} from "express-handlebars";
-import bodyParser from "body-parser";
-import session from "express-session";
 import pgPromise from "pg-promise";
 import  express  from "express";
+import bodyParser from "body-parser";
+import {engine} from "express-handlebars";
+import session from "express-session";
 import flash from "connect-flash";
-
+import registrationNumber from "./registration_numbers.js";
+import queries from "./services/database.js";
+import routes from "./routes/routes.js";
 
 // Create an express instance
 // Create a pg-Promise instance
@@ -23,10 +25,16 @@ var app = express()
 var pgp = pgPromise();
 var reg = registrationNumber()
 
+
 var connectionString = process.env.DATABASE_URL || 'postgres://ncmlcbqz:SXVviMgE6Vt3-ssTYfVB6Wsj42Tw4t0N@trumpet.db.elephantsql.com/ncmlcbqz?ssl=true'
 
+// Create a queries instance pass database inside 
 // Create a database instance and pass connection string inside
+// Create a routes instance pass database inside
 const db = pgp(connectionString);
+var data = queries(db)
+var route = routes(data, reg)
+
 
 // use the express.static built-in middleware to serve static file 'css'
 app.use(express.static(('public')))
@@ -56,77 +64,16 @@ app.use(function (req, res, next) {
     next();
   })
 
-
-
 // Make a http request  using GET method 
-app.get("/", async function(req,res){
-    try{
-    let townReg = await db.manyOrNone("SELECT registration_numbers.reg_num FROM registration_numbers JOIN towns ON registration_numbers.towns_id = towns.id");
+app.get("/", route.home);
 
-    // Send http response 
-    res.render("index", {townReg})
+app.post("/",route.functionality);
 
-    }catch(err){
-        console.log("info","Something went wrong")
-    }
-});
+app.post("/town",route.sorting);
 
-app.post("/", async function(req,res){
-    try{
+app.get("/reg_number/:regNum",route.one)
 
-        let registration = req.body.regiNumber
-        let townReg = await db.manyOrNone("SELECT registration_numbers.reg_num FROM registration_numbers JOIN towns ON registration_numbers.towns_id = towns.id");
-    
-        if(registration === ''){
-            req.flash("error","Empty entry please enter registration")
-        }else if (!reg.validateRegNum(registration)){
-            req.flash('error','Please enter valid registration')
-        }
-        else {
-            let townsIdObj = await db.oneOrNone('SELECT id FROM towns WHERE reg_num_start = $1',[reg.registrationCharacter(registration)]);
-            let townsId = townsIdObj.id;
-            await db.none('INSERT INTO registration_numbers (reg_num, towns_id) VALUES($1,$2)',[reg.validateRegNum(registration),townsId]);
-        }
-        res.render("index",{townReg})
-
-        } catch(err){
-            req.flash("info","Something went wrong");
-        }
-});
-
-app.post("/town", async function(req,res){
-
-    try{
-
-    let selectValue = req.body.townSelect
-    let townReg = await db.manyOrNone("SELECT registration_numbers.reg_num FROM registration_numbers JOIN towns ON registration_numbers.towns_id = towns.id WHERE town_name = $1",[selectValue]);
-    
-    res.render("index",{townReg})
-
-    }catch(err){
-        req.flash("info","Something went wrong");
-    }
-    
-});
-
-app.get("/reg_number/:regNum", async function(req,res){
-    let regNumber = req.params.regNum
-   
-
-    res.render("registration", {regNumber})
-})
-
-app.post("/reset",async function(req,res){
-   try{
-    reg.reset()
-    await db.none("DELETE FROM registration_numbers");
-
-    res.redirect("/")
-    }catch(err){
-        req.flash("info","Something went wrong");
-    }
-    
-})
+app.post("/reset",route.clear)
 
 // declare and set the environment variable PORT 
 var PORT = process.env.PORT || 3001 
