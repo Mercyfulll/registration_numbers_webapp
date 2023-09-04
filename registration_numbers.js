@@ -22,28 +22,6 @@ export default function registrationNumber(){
        return registration 
    }
    
-   function getValidatedRegNum(){
-        return registration
-   }
-
-
-   function limitTown(regNum){
-       var reg = regNum.startsWith('C')
-       if(!reg){
-           return "Only enter registration from Paarl, Stellenbosch,Cape Town and George"
-       }            
-   }
-   function handlingErrors(regNum){
-        if (regNum == ''){
-            msg = "Empty entry please enter registration number"
-        }
-        return msg
-        
-        
-    }
-    function getError(){
-        return msg
-    }
    function registrationCharacter(rNum){
         let regiNum = rNum.toUpperCase() 
         if(regiNum.startsWith('CA')){
@@ -57,6 +35,7 @@ export default function registrationNumber(){
         }
             return regNumChar
    }
+
    function townName(rNum){
     let regiNum = rNum.toUpperCase()
     if(regiNum.startsWith('CX')){
@@ -88,12 +67,6 @@ export default function registrationNumber(){
        }
        return plate
    }
-   function regPlates(regNum){
-       platesArr.push(regNum)
-    }
-   function getPlates(){
-       return platesArr
-    }
     function reset(){
          platesArr = [];
          registration = '';
@@ -103,15 +76,9 @@ export default function registrationNumber(){
 
    return{
            validateRegNum,
-           limitTown,
            regByTown,
-           regPlates,
-           getPlates,
-           handlingErrors,
-           getError,
            townName,
            reset,
-           getValidatedRegNum,
            registrationCharacter,
    }
 }
