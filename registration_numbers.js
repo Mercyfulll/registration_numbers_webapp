@@ -21,6 +21,10 @@ export default function registrationNumber(){
 
        return registration 
    }
+
+   function getValidatedRegNum(){
+        return registration
+   }
    
    function registrationCharacter(rNum){
         let regiNum = rNum.toUpperCase() 
@@ -76,6 +80,7 @@ export default function registrationNumber(){
 
    return{
            validateRegNum,
+           getValidatedRegNum,
            regByTown,
            townName,
            reset,
