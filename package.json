@@ -24,8 +24,7 @@
   },
   "contributors": [],
   "scripts": {
-    "dev": "",
-    "test": ""
+    "test": "mocha"
   },
   "dependencies": {
     "connect-flash": "^0.1.1",
