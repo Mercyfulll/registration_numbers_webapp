@@ -23,7 +23,7 @@ export default function routes(data, reg){
 
             }else if (registration !== reg.validateRegNum(registration)){
 
-                req.flash('error',"Invalid input")
+                req.flash('error',"Invalid input enter two characters, press space then 3-6 digits. Registrations allowed are from Capetown - CA , Stellensbosch- CL , Knysna - CX and Paarl - CJ. Only Upper cases are allowed.")
             }
             else {
 
