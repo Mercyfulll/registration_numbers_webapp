@@ -11,16 +11,14 @@ export default function registrationNumber(){
    function validateRegNum(regNum){
     
        
-       var char =  /^[cxjalCXJAL]{2}\s\d{3,6}$/
-       var val = char.test(regNum)
-       var firstChar = regNum.startsWith('c') || regNum.startsWith('C')
-        
-       if(val && firstChar){
-         registration = regNum.toUpperCase()
-       }
-
-       return registration 
-   }
+    var char = /^[cjxalCJAXL-\s0-9]*$/i
+    var val = char.test(regNum)
+    if(val){
+        let theReg = regNum.slice(0,2) + " " + regNum.slice(2)
+        registration = theReg.toUpperCase()
+    }
+        return registration
+    }
 
    function getValidatedRegNum(){
         return registration
@@ -71,6 +69,8 @@ export default function registrationNumber(){
        }
        return plate
    }
+
+
     function reset(){
          platesArr = [];
          registration = '';

@@ -15,17 +15,17 @@ export default function routes(data, reg){
         try{
             
             let registration = req.body.regiNumber
-            let firstChar =  registration.startsWith('C') || registration.startsWith('c')
+            let acceptedReg = reg.validateRegNum(registration)
 
             if(registration == ""){
 
                 req.flash('error',"Empty entry please enter registration number") 
 
-            }else if (registration !== reg.validateRegNum(registration)){
+            }else if (!acceptedReg){
 
-                req.flash('error',"Invalid input enter two characters, press space then 3-6 digits. Registrations allowed are from Capetown - CA , Stellensbosch- CL , Knysna - CX and Paarl - CJ. Only Upper cases are allowed.")
+                req.flash('error',"Invalid input. Registrations allowed are from Capetown - CA , Stellensbosch- CL , Knysna - CX and Paarl - CJ.")
             }
-            else {
+            else if (registration !== null && acceptedReg) {
 
                 let townsIdObj = await data.getId(reg.registrationCharacter(registration))
                 let townsId = townsIdObj.id;

@@ -6,7 +6,7 @@ CREATE TABLE towns (
 
 CREATE TABLE  registration_numbers(
     id SERIAL PRIMARY KEY,
-    reg_num TEXT NOT NULL,
+    reg_num TEXT NOT NULL UNIQUE,
     towns_id INT REFERENCES towns (id)
 );
 

@@ -4,5 +4,5 @@ const errorMessage = document.querySelector('.error')
 if(errorMessage.innerHTML !== ''){
     setTimeout(function(){
       errorMessage.innerHTML = '';
-    }, 8500);
+    }, 3500);
 }
