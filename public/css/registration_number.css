@@ -7,9 +7,20 @@ body{
     color: crimson;
     margin-left: auto;
     margin-right: auto;
+    font-size: large;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.info{
+    padding: 1em;
+    font-size: large;
+    color: orangered;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 .text,.one {
+    text-align: center;
     padding-top: 4em;
     text-align: center;
     justify-items: center;

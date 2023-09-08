@@ -53,16 +53,18 @@ describe("The filterTowns function test", function (){
         let tab = await data.getTowns()
         
         assert.deepEqual([
-            {
-              reg_num: 'CJ 8554'
-            },
-            {
-              reg_num: 'CJ 7777'
-            },
-            {
-              reg_num: 'CJ 4990'
-            }
-          ]
+          {
+            reg_num: 'CJ 8554'
+          },
+          {
+            reg_num: 'CJ 7777'
+          },
+          {
+            reg_num: 'CJ 4990'
+          }
+        ]
+        
+        
           ,await data.filterTowns("Paarl"))
 
     })

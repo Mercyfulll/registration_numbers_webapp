@@ -48,7 +48,7 @@ describe('The Addregistration query test', async function(){
 
         let townsIdObj = await data.getId(reg.registrationCharacter("CA2223"));
         let townsId = townsIdObj.id;
-        let plate = reg.validateRegNum("CA2223");
+        let plate = reg.validateRegNum("rtdg");
         await data.Addregistration(plate ,townsId);
 
 

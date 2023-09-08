@@ -14,12 +14,12 @@ export default function registrationNumber(){
     var char = /^[cjxalCJAXL-\s0-9]*$/i
     var val = char.test(regNum)
     if(val){
-        let theReg = regNum.slice(0,2) + " " + regNum.slice(2)
-        registration = theReg.toUpperCase()
+        // let theReg = regNum.slice(0,2) + " " + regNum.slice(2) || regNum.split("-").join("")
+        registration = regNum.toUpperCase()
+        platesArr.push(registration)
     }
         return registration
-    }
-
+   } 
    function getValidatedRegNum(){
         return registration
    }
@@ -85,5 +85,6 @@ export default function registrationNumber(){
            townName,
            reset,
            registrationCharacter,
+        
    }
 }

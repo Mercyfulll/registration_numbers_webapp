@@ -14,39 +14,52 @@ export default function routes(data, reg){
     async function functionality(req,res){
         try{
             
+              
             let registration = req.body.regiNumber
             let acceptedReg = reg.validateRegNum(registration)
+            let rows = await data.duplicates(acceptedReg)
 
-            if(registration == ""){
-
-                req.flash('error',"Empty entry please enter registration number") 
-
-            }else if (!acceptedReg){
-
-                req.flash('error',"Invalid input. Registrations allowed are from Capetown - CA , Stellensbosch- CL , Knysna - CX and Paarl - CJ.")
+            if (rows.length > 0){
+                req.flash('error', 'Entry already exists')
             }
-            else if (registration !== null && acceptedReg) {
+            if(registration == ""){
+                req.flash('error',"Empty entry please enter registration number") 
+            }
+            
+            if (registration !== null && acceptedReg) {
 
                 let townsIdObj = await data.getId(reg.registrationCharacter(registration))
                 let townsId = townsIdObj.id;
-                
+    
                 await data.Addregistration(reg.validateRegNum(registration),townsId)
+              
+            }else{
+                req.flash('error',"Invalid input. Registrations allowed are from Capetown - CA , Stellensbosch- CL , Knysna - CX and Paarl - CJ.")
             }
+    
             res.redirect("/")
     
             } catch(err){
-                console.log("Something went wrong");
+                // req.flash('error',"Invalid input. Registrations allowed are from Capetown - CA , Stellensbosch- CL , Knysna - CX and Paarl - CJ.")
+                res.redirect("/")
             }
     }
     async function sorting(req,res){
+      
 
         try{
-    
-        let selectValue = req.body.townSelect
-       
-        let townReg = await data.filterTowns(selectValue)
-        res.render("index",{townReg})
-    
+            
+            let selectValue = req.body.townSelect
+            const townReg = await data.filterTowns(selectValue)
+
+            if (selectValue && townReg.length <= 0) {
+                 req.flash('info','No registrations under this town');
+            } else{
+                req.flash('info','');
+                townReg
+            }
+
+            res.render("index", { townReg }); 
         }catch(err){
             console.log("Something went wrong");
         }
@@ -67,6 +80,8 @@ export default function routes(data, reg){
          reg.reset()
     
          await data.deleteAll()
+
+         req.flash('info', 'Database has been successfully cleared')
          
          res.redirect("/")
          }catch(err){

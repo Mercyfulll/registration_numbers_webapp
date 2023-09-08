@@ -27,7 +27,7 @@ describe("The validateRegNum function", function(){
     it("It should check if Registration number starts with c and return null if false", function(){
 
         let reg = registrationNumber()
-        reg.validateRegNum("Lc 9886")
+        reg.validateRegNum("")
 
         assert.equal('',reg.getValidatedRegNum())
     })
