@@ -33,14 +33,14 @@ export default function routes(data, reg){
     
                 await data.Addregistration(reg.validateRegNum(registration),townsId)
               
-            }else{
+            }else if(registration !== '' && !acceptedReg){
                 req.flash('error',"Invalid input. Registrations allowed are from Capetown - CA , Stellensbosch- CL , Knysna - CX and Paarl - CJ.")
             }
     
             res.redirect("/")
     
             } catch(err){
-                // req.flash('error',"Invalid input. Registrations allowed are from Capetown - CA , Stellensbosch- CL , Knysna - CX and Paarl - CJ.")
+                
                 res.redirect("/")
             }
     }
@@ -51,15 +51,15 @@ export default function routes(data, reg){
             
             let selectValue = req.body.townSelect
             const townReg = await data.filterTowns(selectValue)
-
+            
             if (selectValue && townReg.length <= 0) {
                  req.flash('info','No registrations under this town');
             } else{
                 req.flash('info','');
-                townReg
+               
             }
 
-            res.render("index", { townReg }); 
+            res.render("index", { townReg, flash: req.flash('info') }); 
         }catch(err){
             console.log("Something went wrong");
         }
