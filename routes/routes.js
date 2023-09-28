@@ -11,32 +11,90 @@ export default function routes(data, reg){
             console.log("info","Something went wrong")
         }
     }
+    // } else if (rows.length > 0) {
+    //     duplicateExists = true; // Set the duplicateExists variable to true
+    //     if (duplicateExists) {
+    //         req.flash('error', 'Entry already exists');
+    //         duplicateExists = false
+    //     }
+    //     return res.direct("/")
+    // async function functionality(req, res) {
+        
+    //         let registration = req.body.regiNumber;
+    //         let acceptedReg = reg.validateRegNum(registration);
+
+    //         // let rows = await data.duplicates(acceptedReg);
+    
+    //         if (registration == "") {
+    //             req.flash('error', "Empty entry, please enter a registration number"); 
+    //             res.redirect("/")
+    //         }
+    
+    //         else if (acceptedReg === "") {
+    //             console.log(acceptedReg)
+    //             req.flash('error', "Invalid input. Registrations allowed are from Capetown - CA , Stellensbosch- CL , Knysna - CX and Paarl - CJ.");
+    //             res.redirect("/")
+    //         // if (registration !== null && acceptedReg){
+
+    //         // }
+    //         } else if(acceptedReg !== ''){
+                
+    //             acceptedReg = ""
+    //              try{
+    //                 let townsIdObj = await data.getId(reg.registrationCharacter(registration));
+    //                 let townsId = townsIdObj.id;
+    //                 await data.Addregistration(reg.validateRegNum(registration), townsId);
+    //                 res.redirect("/")
+    //             }
+    //             catch (err) {
+    //                 acceptedReg = ""
+    //                 console.log(err.message)
+    //                 if(err.message.includes("duplicate key")){
+    //                     req.flash('error', 'Entry already exists')
+    //                     res.redirect("/")
+    //                 }
+    //                 // req.flash('error', 'Entry already exists')
+    //                 // res.redirect("/");
+    //             }
+    //         }
+    
+    //         // res.redirect("/");
+        
+    // }
+
+    
     async function functionality(req,res){
         try{
             
               
             let registration = req.body.regiNumber
+            console.log(registration)
             let acceptedReg = reg.validateRegNum(registration)
             let rows = await data.duplicates(acceptedReg)
+            // let errors = reg.errorMessages(registration)
 
-            if (rows.length > 0){
-                req.flash('error', 'Entry already exists')
+            if(!acceptedReg){
+                req.flash('error',"Invalid input. Registrations allowed are from Capetown - CA , Stellensbosch- CL , Knysna - CX and Paarl - CJ.")
             }
-            if(registration == ""){
+            else if(registration === ''){
                 req.flash('error',"Empty entry please enter registration number") 
             }
-            
-            if (registration !== null && acceptedReg) {
+            // else if(errors){
+            //     req.flash('error',errors)
+            // }
+            else if (rows.length > 0){
+                req.flash('error', "Entry already exists")
+                
+            }
+            else if (registration !== null && acceptedReg) {
 
                 let townsIdObj = await data.getId(reg.registrationCharacter(registration))
                 let townsId = townsIdObj.id;
     
                 await data.Addregistration(reg.validateRegNum(registration),townsId)
               
-            }else if(registration !== '' && !acceptedReg){
-                req.flash('error',"Invalid input. Registrations allowed are from Capetown - CA , Stellensbosch- CL , Knysna - CX and Paarl - CJ.")
             }
-    
+            
             res.redirect("/")
     
             } catch(err){
@@ -44,6 +102,7 @@ export default function routes(data, reg){
                 res.redirect("/")
             }
     }
+
     async function sorting(req,res){
       
 
@@ -65,7 +124,7 @@ export default function routes(data, reg){
         }
         
     }
-    async function one(req,res){
+    async function showOneRegistration(req,res){
         try{
         let regNumber = req.params.regNum
        
@@ -91,9 +150,9 @@ export default function routes(data, reg){
      }
      return{
         clear,
-        one,
         sorting,
         functionality,
-        home
+        home,
+        showOneRegistration
      }
 }

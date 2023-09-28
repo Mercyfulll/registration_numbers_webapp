@@ -71,7 +71,7 @@ app.post("/",route.functionality);
 
 app.post("/town",route.sorting);
 
-app.get("/reg_number/:regNum",route.one)
+app.get("/reg_number/:regNum",route. showOneRegistration)
 
 app.post("/reset",route.clear)
 

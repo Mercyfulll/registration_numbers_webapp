@@ -9,11 +9,10 @@ export default function registrationNumber(){
 
    
    function validateRegNum(regNum){
-    
-       
     var char = /^[cjxalCJAXL-\s0-9]*$/i
     var val = char.test(regNum)
-    if(val){
+    var characterStart = regNum.startsWith('c') ||  regNum.startsWith('C')
+    if(val && characterStart){
         // let theReg = regNum.slice(0,2) + " " + regNum.slice(2) || regNum.split("-").join("")
         registration = regNum.toUpperCase()
         platesArr.push(registration)
@@ -69,21 +68,29 @@ export default function registrationNumber(){
        }
        return plate
    }
-
-
-    function reset(){
-         platesArr = [];
-         registration = '';
-         regNumChar = '';
-         location = ''
+   
+   function errorMessages(regNum){
+    var char = /^[cjxalCJAXL-\s0-9]*$/i
+    var val = char.test(regNum)
+    var characterStart = regNum.startsWith('c') ||  regNum.startsWith('C')
+    if(val && characterStart){
+        
+        registration = regNum.toUpperCase()
+        
     }
+    if(!registration){
+        msg = 'Invalid input. Registrations allowed are from Capetown - CA , Stellensbosch- CL , Knysna - CX and Paarl - CJ.'
+    }
+        return msg
+   }
+    
 
    return{
            validateRegNum,
            getValidatedRegNum,
            regByTown,
            townName,
-           reset,
+           errorMessages,
            registrationCharacter,
         
    }
